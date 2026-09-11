@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+<title>The Vinci Game</title>
+<meta name="application-name" content="The Vinci Game">
+<meta name="description" content="A compound-word and phrase-chain puzzle game. Only the first word is given — guess the rest of the chain.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- START SCREEN -->
+  <section id="screen-start" class="screen active" aria-label="Start screen">
+    <div class="brand-card">
+      <div class="brand-title">The Vinci<br>Game</div>
+      <div class="brand-tagline">Guess the Word Chain</div>
+    </div>
+    <div class="start-progress" id="start-progress" aria-live="polite"></div>
+    <div class="start-actions">
+      <button class="btn btn-block" id="btn-continue" type="button">Continue</button>
+      <button class="btn btn-outline btn-block" id="btn-new" type="button">New Game</button>
+      <button class="btn-ghost" id="btn-reset" type="button">Reset Progress</button>
+    </div>
+  </section>
+
+  <!-- COOLDOWN / RECOVERY SCREEN -->
+  <section id="screen-cooldown" class="screen" aria-label="Recovery">
+    <div class="cooldown-card">
+      <div class="cooldown-emoji" aria-hidden="true">&#128148;</div>
+      <div class="cooldown-title">Out of Hearts</div>
+      <div class="cooldown-sub">Come back in</div>
+      <div class="cooldown-timer" id="cooldown-timer-main" aria-live="polite">15:00</div>
+      <div class="cooldown-sub" id="cooldown-status">Your hearts will refill when the timer ends.</div>
+      <button class="btn btn-block" id="btn-cooldown-continue" type="button" disabled>Continue</button>
+      <button class="btn-ghost" id="btn-cooldown-menu" type="button">Back to Menu</button>
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="screen-game" class="screen" aria-label="Gameplay">
+    <header class="game-header">
+      <div class="wordmark-row">
+        <div class="wordmark">The Vinci Game</div>
+        <button class="quit-btn" id="btn-quit" type="button">Menu</button>
+      </div>
+      <div class="status-row">
+        <div>
+          <span class="level-label" id="level-label">LEVEL 1 / 100</span>
+          <span class="difficulty-label" id="difficulty-label">BEGINNER</span>
+        </div>
+        <div class="hearts" id="hearts-display" aria-live="polite" role="status"></div>
+      </div>
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+    </header>
+
+    <div class="chain-wrap" id="chain-wrap">
+      <div class="chain" id="chain-container"></div>
+    </div>
+
+    <div class="input-area">
+      <div class="feedback-line" id="feedback-line" aria-live="assertive"></div>
+      <div class="input-row" id="input-row">
+        <label for="guess-input" class="sr-only">Type the missing word</label>
+        <input type="text" id="guess-input" placeholder="Your answer" autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <button class="check-btn" id="btn-check" type="button">Check</button>
+      </div>
+      <div class="utility-row">
+        <button class="hint-btn" id="btn-hint" type="button">Use Hint</button>
+        <span class="hint-count" id="hint-count"></span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- LEVEL COMPLETE OVERLAY -->
+<div class="overlay" id="overlay-complete" role="dialog" aria-modal="true" aria-labelledby="complete-title">
+  <div class="overlay-card">
+    <div class="overlay-title" id="complete-title">Chain Complete!</div>
+    <div class="overlay-chain" id="complete-chain"></div>
+    <div class="overlay-actions">
+      <button class="btn btn-block" id="btn-next-level" type="button">Next Level &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER OVERLAY (bridges to cooldown screen) -->
+<div class="overlay" id="overlay-gameover" role="dialog" aria-modal="true" aria-labelledby="gameover-title">
+  <div class="overlay-card">
+    <div class="overlay-title" id="gameover-title">Out of Hearts</div>
+    <div class="overlay-sub">You'll need to wait 15 minutes before you can continue. Your level progress is saved.</div>
+    <div class="overlay-actions">
+      <button class="btn btn-block" id="btn-gameover-ok" type="button">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL COMPLETION OVERLAY -->
+<div class="overlay" id="overlay-final" role="dialog" aria-modal="true" aria-labelledby="final-title">
+  <div class="overlay-card">
+    <div class="final-title" id="final-title">The Vinci Game</div>
+    <div class="final-score">100 / 100</div>
+    <div class="final-chain-complete">Chain Complete.</div>
+    <div class="overlay-sub">You solved all 100 chains.</div>
+    <div class="final-message" id="final-message"></div>
+    <div class="overlay-actions">
+      <button class="btn btn-outline btn-block" id="btn-final-menu" type="button">Back to Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESET CONFIRM OVERLAY -->
+<div class="overlay" id="overlay-reset" role="dialog" aria-modal="true" aria-labelledby="reset-title">
+  <div class="overlay-card">
+    <div class="overlay-title" id="reset-title">Reset Progress?</div>
+    <div class="overlay-sub">This will permanently erase your level, hearts, hints, and refresh count. This cannot be undone.</div>
+    <div class="overlay-actions">
+      <button class="btn btn-block" id="btn-reset-confirm" type="button">Yes, Reset Everything</button>
+      <button class="btn btn-outline btn-block" id="btn-reset-cancel" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
